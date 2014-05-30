@@ -20,7 +20,7 @@ var Todo = new Schema({
 
 mongoose.model( 'Todo', Todo );
 
-mongoose.connect('mongodb://hwclass:123456@novus.modulusmongo.net:27017/Toxyh2is', function(err) {
+mongoose.connect(CONFIG.constants.mongo.url, function(err) {
 	if (err) console.log(err);
 });
 
