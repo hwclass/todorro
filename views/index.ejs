@@ -1,0 +1,155 @@
+
+<% layout('layout') -%>
+
+<div class="row">
+	<div class="col-md-12">
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="example-title text-center">
+					Todorro
+				</h3>
+				<h4 class="example-title text-center">
+					Simple ToDo Application
+				</h4>
+			</div>
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					<form action="/add" method="post" accept-charset="utf-8" class="cf fw">
+						<!--<input type="text" name="content" class="fl"/>-->
+						<div class="input-group form-search">
+							<input type="text" name="content" class="form-control search-query">
+							<span class="input-group-btn">
+								<button type="submit" class="btn btn-primary" data-type="last">Add</button>
+							</span>
+						</div>
+					</form>
+				</h3>
+			</div>
+			<div class="panel-body">
+				<% if (err.length > 0) { %>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="alert alert-danger">
+								<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+								<strong><%= err %></stron>
+							</div>
+						</div>
+					</div>
+				<%}%>
+				<ul class="list-group">
+					<% for(var i=0; i < todos.length; i++) { %>
+						<li class="list-group-item <% if (todos[i].done != 'true') { %> list-group-item-warning fcblack<% } %>">
+							<span class="badge badge-primary date"><%= todos[i].creationDate %></span>
+							<%= todos[i].content %>
+						</li>
+					<% } %>
+					<!--
+					<li class="list-group-item"><span class="badge">14</span>Cras justo odio</li>
+					<li class="list-group-item"><span class="badge badge-default">91</span>Dapibus ac facilisis in</li>
+					<li class="list-group-item"><span class="badge badge-primary">38</span>Morbi leo risus</li>
+					<li class="list-group-item"><span class="badge badge-success">56</span>Porta ac consectetur ac</li>
+					<li class="list-group-item"><span class="badge badge-warning">20</span>Vestibulum at eros</li>
+					<li class="list-group-item"><span class="badge badge-danger">99+</span>Dapibus ac facilisis in</li>
+					-->
+				</ul>
+			</div>
+		</div>
+
+		<h5 class="example-title">Todorro - Simple ToDo Application</h2>
+		<div class="row">
+			<div class="col-md-12">
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+<p id="todoList" class="row col-md-12">
+	<% for(var i=0; i < todos.length; i++) { %>
+		<p class="cf todoItem col-md-12">
+			<span class="fl ml10 content"><%= todos[i].content %></span>
+			<span class="fl ml10 date"><%= todos[i].creationDate%></span>
+			<a href="#" title="Edit this todo item" class="fl ml10 editAction" data-id="<%= todos[i]._id %>">Edit</a>
+			<!--<button type="button" title="Edit this todo item" class="btn btn-primary editAction">Edit</button>-->
+			<a href="/remove/<%= todos[i]._id %>" title="Delete this todo item" class="fl ml10 deleteAction">Delete</a>
+			<a href="/status" class="fl ml10 updateStatusAction" data-id="<%= todos[i]._id %>" data-status="<%= todos[i].done %>">
+				<% if (todos[i].done == 'true') { %> Complete <% } else { %> Not Completed <% } %>
+			</a>
+		</p>
+	<% } %>
+</p>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/javascripts/bootstrap.min.js"></script>
+<script>
+	
+	$(document).ready(function () {
+
+		var _id, _content, _done;
+
+		$('.editAction').on('click', function (event) {
+			event.preventDefault();
+			_id = $(this).data('id');
+			_content = $(this).parent('.todoItem').find('.content').text();
+			$(this).hide();
+			$(this).next('.deleteAction').hide();
+			$(this).parent('.todoItem').find('.content').empty().html('<input type="text" value="' + _content + '" id="editedContent"/>');
+			$(this).after('<a href="#" title="Update this todo item" class="fl ml10 updateAction">Update</a>');
+		});
+
+		$(document).on('click', '.updateAction', function(event){ 
+		   updateTodoItem(_id, $('#editedContent').val());
+		});
+
+		$(document).on('click', '.updateStatusAction', function(event){
+			event.preventDefault();
+			_id = $(this).data('id');
+			_done = !$(this).data('status');
+		   updateStatusTodoItem(_id, _done);
+		});
+
+		function updateTodoItem (id, content) {
+			var jqxhr = $.ajax({
+			  type: "POST",
+			  url: "/update",
+			  data: { id: id, content: content }
+			}).done(function() {
+				$('#editedContent').remove();
+				location.reload();
+			}).fail(function(err) {
+				console.log(err);
+			}).always(function() {
+			  console.log("complete");
+			});
+		}
+
+		function updateStatusTodoItem (id, done) {
+			var jqxhr = $.ajax({
+			  type: "POST",
+			  url: "/status",
+			  data: { id: id, done: done }
+			}).done(function() {
+				// $('#editedContent').remove();
+				location.reload();
+			}).fail(function(err) {
+				console.log(err);
+			}).always(function() {
+			  console.log("complete");
+			});
+		}
+
+	});
+
+	function formatDates () {
+		var dates = $('.date');
+		var dateArr = new Array();
+		for (var index in dates) {
+			dateArr.push($(dates[index]).html().split(' '));
+			$($('.date').get(index)).html(dateArr[index][2] + ' ' + dateArr[index][1] + ' ' + dateArr[index][3] + ' ' + dateArr[index][4]);
+		}
+	}
+
+	formatDates();
+
+</script>

@@ -1,0 +1,44 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+form {
+	margin-bottom : 0;
+}
+
+.cf {content: ""; display: table;}
+.cf:after {clear: both;}
+
+a {
+  color: #00B7FF;
+}
+
+.fw {
+	width: 100%;
+}
+
+.fl {
+	float: left;
+}
+
+.ml10 {
+	margin-left: 10px;
+}
+
+.fcwhite {
+	color : #FFFFFF;
+}
+
+.fcblack {
+	color : #434a54;
+}
+
+/*custom*/
+
+.panel .panel-heading {
+	padding: 10px 15px;
+	border-bottom: 1px solid transparent;
+	border-top-right-radius: 0;
+	border-top-left-radius: 0;
+}
