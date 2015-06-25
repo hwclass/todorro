@@ -7,7 +7,7 @@
 var Todo = require('./models/Todo');
 
 //config setup
-var CONFIG = require('./../config');
+var config = require('./../config');
 
 var winston = require('winston');
 winston.add(winston.transports.File, {filename: 'date.log'});
@@ -16,15 +16,15 @@ var mongoose = require('mongoose');
 var Schema   = mongoose.Schema;
  
 var Todo = new Schema({
-    user_id : String,
-    content : String,
-    creationDate : { type: Date, default: Date.now },
-    done : false
+  user_id : String,
+  content : String,
+  creationDate : { type: Date, default: Date.now },
+  done : false      
 });
 
 mongoose.model( 'Todo', Todo );
 
-mongoose.connect(CONFIG.constants.mongo.url, function(err) {
+mongoose.connect(config.mongo.url, function(err) {
 	if (err) console.log(err);
 });
 
@@ -41,13 +41,12 @@ dbConnection.once('open', function callback () {
 populateDBWithTodos = function () {
     var newTodo = [{
 	    user_id: "2",
-	    content: "adsfasdasdas",
+	    content: "New Todo 1",
 	    creationDate: "11/01/2014"
     }];
-
     new Todo({
     	user_id: "2",
-    	content: "adsfasdasdas",
+    	content: "New Todo 2",
     	creationDate: "11/01/2014"
     }).save(function (err, todo, count) {
     	console.log(todo, count);
@@ -61,7 +60,7 @@ exports.index = function (req, res){
 		res.render( 'index', {
 			title : 'Express Todo Example',
 			todos : todos,
-			err : (err?CONFIG.constants.messages.error.default:'')
+			err : (err?config.messages.error.default:'')
 		});
 	}).sort( '-creationDate' );
 };
@@ -78,7 +77,7 @@ exports.add = function (req, res){
 			winston.log('data', 'New todo saved.');
 			res.redirect('/');
 		} else {
-			res.redirect('/', CONFIG.constants.messages.error.default);
+			res.redirect('/', config.messages.error.default);
 		}
 	});
 };
@@ -91,29 +90,10 @@ exports.update = function ( req, res ){
 				res.redirect('/');
 			});
 		} else {
-			res.redirect( '/', {err : CONFIG.constants.messages.error.default});
+			res.redirect( '/', {err : config.messages.error.default});
 		}
 	});
 };
-
-/*
-exports.updatestatus = function (req, res) {
-	console.log('1 : ' + mongoose.Types.ObjectId(req.body.id));
-	Todo.findById( {_id : mongoose.Types.ObjectId(req.params.id)}, function ( err, todo ){
-		console.log('2: ' + todo);
-		if (!err) {
-			console.log('3: ' + req.params);
-			todo.update({done: req.body.done, creationDate:Date.now()}, function () {
-				res.redirect('/');
-			});
-		} else {
-			console.log(4);
-			console.log(err);
-			res.redirect('/', {err : err});
-		}
-	});
-}
-*/
 
 exports.status = function (req, res) {
 	Todo.findById( {_id : mongoose.Types.ObjectId(req.body.id)}, function ( err, todo ){
@@ -121,7 +101,7 @@ exports.status = function (req, res) {
 			if (!err) {
 				res.redirect('/');
 			} else {
-				res.redirect('/', CONFIG.constants.messages.error.default);
+				res.redirect('/', config.messages.error.default);
 			}
 		});
 	});
@@ -135,7 +115,7 @@ exports.remove = function ( req, res ){
 			  res.redirect( '/' );
 			});
 		} else {
-			res.redirect( '/', {err : CONFIG.constants.messages.error.default});
+			res.redirect( '/', {err : config.messages.error.default});
 		}
 	});
 };
