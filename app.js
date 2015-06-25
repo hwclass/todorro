@@ -1,21 +1,45 @@
+'use strict';
 
-/**
- * Module dependencies.
+ /*!
+ * Todorro - A simple todo app with Node + Express + EJS
+ *
+ * Copyright (c) 2015 Barış Güler
+ * http://hwclass.in
+ *
+ * Licensed under MIT
+ * http://www.opensource.org/licenses/mit-license.php
+ *
+ *
+ * Launch  : May 2014
+ * Version : 1.1.0
+ * Released: May 30th, 2014
+ *
+ *
+ * tracks the issues
  */
 
- // mongoose setup
-var DB = require( './db' );
+//import config
+var config = require( './config' );
 
-//config setup
-var CONFIG = require( './config' );
-
+//define express
 var express = require('express');
-var routes = require('./routes');
-var http = require('http');
-var path = require('path');
-var engine  = require('ejs-locals');
-/*var winston = require('winston'); - activate if you want logging.*/
 
+//define express routing
+var routes = require('./routes');
+
+//define default http server
+var http = require('http');
+
+//define path plugin
+var path = require('path');
+
+//define ejs templating
+var engine  = require('ejs-locals');
+
+//define winston to log
+var winston = require('winston');
+
+//create app from the instance called express
 var app = express();
 
 // all environments
@@ -59,3 +83,4 @@ app.get('/remove/:id', routes.remove);
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+

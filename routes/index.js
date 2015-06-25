@@ -3,8 +3,12 @@
  * GET home page.
  */
 
+/*Todo model to import*/
+var Todo = require('./models/Todo');
+
 //config setup
 var CONFIG = require('./../config');
+
 var winston = require('winston');
 winston.add(winston.transports.File, {filename: 'date.log'});
 
@@ -57,7 +61,7 @@ exports.index = function (req, res){
 		res.render( 'index', {
 			title : 'Express Todo Example',
 			todos : todos,
-			err : (err?CONFIG.constants.messages.error.anErrorOccured:'')
+			err : (err?CONFIG.constants.messages.error.default:'')
 		});
 	}).sort( '-creationDate' );
 };
@@ -74,7 +78,7 @@ exports.add = function (req, res){
 			winston.log('data', 'New todo saved.');
 			res.redirect('/');
 		} else {
-			res.redirect('/', CONFIG.constants.messages.error.anErrorOccured);
+			res.redirect('/', CONFIG.constants.messages.error.default);
 		}
 	});
 };
@@ -87,7 +91,7 @@ exports.update = function ( req, res ){
 				res.redirect('/');
 			});
 		} else {
-			res.redirect( '/', {err : CONFIG.constants.messages.error.anErrorOccured});
+			res.redirect( '/', {err : CONFIG.constants.messages.error.default});
 		}
 	});
 };
@@ -117,7 +121,7 @@ exports.status = function (req, res) {
 			if (!err) {
 				res.redirect('/');
 			} else {
-				res.redirect('/', CONFIG.constants.messages.error.anErrorOccured);
+				res.redirect('/', CONFIG.constants.messages.error.default);
 			}
 		});
 	});
@@ -131,7 +135,7 @@ exports.remove = function ( req, res ){
 			  res.redirect( '/' );
 			});
 		} else {
-			res.redirect( '/', {err : CONFIG.constants.messages.error.anErrorOccured});
+			res.redirect( '/', {err : CONFIG.constants.messages.error.default});
 		}
 	});
 };

@@ -1,14 +1,21 @@
-var constants = constants || {};
+'use strict';
 
-var constants = {
+/**
+ * config constants to export
+ *
+ * @noparam
+ */
+
+var db = require('./db');
+var messages = require('./messages');
+
+module.exports = {
 	mongo : {
-		url : 'mongodb://hwclass:123456@novus.modulusmongo.net:27017/Toxyh2is'
+		url : db.mongo.url
 	},
 	messages : {
 		error : {
-			anErrorOccured : 'An error occured. Please try again.'
+			default : messages.error.default
 		}
 	}
 }
-
-exports.constants = constants;
