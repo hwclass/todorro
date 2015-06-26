@@ -4,7 +4,7 @@
  */
 
 /*Todo model to import*/
-var Todo = require('./models/Todo');
+var Todo = require('../models/Todo');
 
 //config setup
 var config = require('./../config');
@@ -14,12 +14,12 @@ winston.add(winston.transports.File, {filename: 'date.log'});
 
 var mongoose = require('mongoose');
 var Schema   = mongoose.Schema;
- 
+
 var Todo = new Schema({
   user_id : String,
   content : String,
   creationDate : { type: Date, default: Date.now },
-  done : false      
+  done : false
 });
 
 mongoose.model( 'Todo', Todo );

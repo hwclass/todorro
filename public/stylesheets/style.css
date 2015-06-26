@@ -42,3 +42,11 @@ a {
 	border-top-right-radius: 0;
 	border-top-left-radius: 0;
 }
+
+.list-group-item {
+  padding: 21px 15px !important;
+}
+
+.badge {
+  padding: 7px 7px !important;
+}
