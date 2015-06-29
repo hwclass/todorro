@@ -34,28 +34,10 @@ var dbConnection = mongoose.connection;
 
 dbConnection.once('open', function callback () {
 	console.log('DB connection opened...');
-	//populateDBWithTodos();
 });
-
-/*populating DB with dummy datas*/
-populateDBWithTodos = function () {
-    var newTodo = [{
-	    user_id: "2",
-	    content: "New Todo 1",
-	    creationDate: "11/01/2014"
-    }];
-    new Todo({
-    	user_id: "2",
-    	content: "New Todo 2",
-    	creationDate: "11/01/2014"
-    }).save(function (err, todo, count) {
-    	console.log(todo, count);
-    });
-}
 
 /*get index page with all todo items*/
 exports.index = function (req, res){
-	console.log('index route 1');
 	Todo.find({}, function ( err, todos, count ){
 		res.render( 'index', {
 			title : 'Express Todo Example',
